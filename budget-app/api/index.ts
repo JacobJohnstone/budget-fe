@@ -7,6 +7,7 @@
  */
 
 import axios, { CreateAxiosDefaults } from 'axios';
+import { attachAuthHeader, handleRequestFulfilled, handleRequestRejected, handleUnauthenticatedError } from './interceptors';
 
 // client instance configuration
 const AXIOS_OPTIONS: CreateAxiosDefaults<any, any> | undefined = {
@@ -18,5 +19,14 @@ const AXIOS_OPTIONS: CreateAxiosDefaults<any, any> | undefined = {
   }
 }
 
+// generate api client
+const client = axios.create(AXIOS_OPTIONS);
+
+// Register request interceptors
+client.interceptors.request.use(attachAuthHeader, handleRequestRejected)
+
+// Register response interceptors
+client.interceptors.response.use(handleRequestFulfilled, handleUnauthenticatedError)
+
 // generate and export the axios client
-export default axios.create(AXIOS_OPTIONS);
+export default client;
