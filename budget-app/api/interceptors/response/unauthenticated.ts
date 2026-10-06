@@ -5,14 +5,7 @@
  * The rejected interceptor handles unauthenticated (401) responses.
  */
 
-import axios, { type AxiosResponse } from "axios"
-
-// on response fulfilled
-export const handleRequestFulfilled = (
-  response: AxiosResponse,
-): AxiosResponse => {
-  return response
-}
+import axios from "axios"
 
 // on response rejected
 export const handleUnauthenticatedError = (error: unknown): Promise<never> => {
