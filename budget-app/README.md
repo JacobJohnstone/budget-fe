@@ -2,6 +2,13 @@
 
 This is a Next.js template with shadcn/ui.
 
+## Authentication API
+
+Authentication endpoints share `AUTH_SERVICE_ROUTE` from
+`api/authentication/constants.ts`. Endpoint modules import constants directly
+instead of through the authentication index to avoid circular initialization.
+The index also re-exports the constant for consumers.
+
 ## Adding components
 
 To add components to your app, run the following command:

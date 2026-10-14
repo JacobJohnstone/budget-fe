@@ -1,4 +1,4 @@
-import { AUTH_SERVICE_ROUTE } from "."
+import { AUTH_SERVICE_ROUTE } from "./constants"
 import client from ".."
 
 const LOGOUT_ROUTE = AUTH_SERVICE_ROUTE + "/logout"

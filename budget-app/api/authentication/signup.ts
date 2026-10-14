@@ -1,4 +1,4 @@
-import { AUTH_SERVICE_ROUTE } from "."
+import { AUTH_SERVICE_ROUTE } from "./constants"
 import client from ".."
 import type { ApiResult, SignupPayload, User } from "./types"
 
