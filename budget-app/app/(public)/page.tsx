@@ -25,6 +25,7 @@ const CREATE = "Create account";
 const LOADING = "Please wait...";
 
 const FORM_ID = "auth-form";
+const WARNING_ID = "auth-validation-warning";
 const DASHBOARD_ROUTE = "/dashboard";
 
 /**
@@ -38,11 +39,26 @@ export default function PublicLandingPage() {
   const [isLogin, setIsLogin] = React.useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [warning, setWarning] = React.useState<{ field: string; message: string } | null>(null);
 
   // handlers
   const handleToggle = () => {
     setError(null);
+    setWarning(null);
     setIsLogin((prev) => !prev);
+  }
+
+  // prevent ugly default form validation pop-over to use clean warning text
+  // validates things like email format and password length
+  const handleInvalid = (event: React.InvalidEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const input = event.target;
+    if (input instanceof HTMLInputElement && input === event.currentTarget.querySelector("input:invalid")) {
+      setError(null);
+      setWarning({ field: input.id, message: input.validationMessage });
+      input.focus();
+    }
   }
 
   /**
@@ -55,6 +71,7 @@ export default function PublicLandingPage() {
     
     // reset error state, start loading state
     setError(null);
+    setWarning(null);
     setIsSubmitting(true);
 
     // get the form object
@@ -93,22 +110,22 @@ export default function PublicLandingPage() {
       
       <Card className="w-full max-w-md pt-4">
         <CardContent>
-          <form id={FORM_ID} className="space-y-4" onSubmit={handleSubmit}>
+          <form id={FORM_ID} className="space-y-4" onSubmit={handleSubmit} onInvalid={handleInvalid} onInput={() => setWarning(null)}>
             {!isLogin ? (
               <div className="flex gap-[var(--space-2)]">
                 <div className="flex flex-1 flex-col gap-[var(--space-2)]">
                   <Label htmlFor="firstName">First name</Label>
-                  <Input id="firstName" name="firstName" placeholder="Alex" autoComplete="given-name" required maxLength={50} />
+                  <Input id="firstName" name="firstName" placeholder="Alex" autoComplete="given-name" required maxLength={50} aria-describedby={warning?.field === "firstName" ? WARNING_ID : undefined} />
                 </div>
                 <div className="flex flex-1 flex-col gap-[var(--space-2)]">
                   <Label htmlFor="lastName">Last name</Label>
-                  <Input id="lastName" name="lastName" placeholder="Morgan" autoComplete="family-name" required maxLength={50} />
+                  <Input id="lastName" name="lastName" placeholder="Morgan" autoComplete="family-name" required maxLength={50} aria-describedby={warning?.field === "lastName" ? WARNING_ID : undefined} />
                 </div>
               </div>
             ) : null}
             <div className="flex flex-col gap-[var(--space-2)]">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="name@example.com" autoComplete="email" required maxLength={50} />
+              <Input id="email" name="email" type="email" placeholder="name@example.com" autoComplete="email" required maxLength={50} aria-describedby={warning?.field === "email" ? WARNING_ID : undefined} />
             </div>
             <div className="flex flex-col gap-[var(--space-2)]">
               <Label htmlFor="password">Password</Label>
@@ -121,8 +138,12 @@ export default function PublicLandingPage() {
                 required
                 minLength={8}
                 maxLength={50}
+                aria-describedby={warning?.field === "password" ? WARNING_ID : undefined}
               />
             </div>
+            {warning ? (
+              <p id={WARNING_ID} role="alert" className="text-sm font-medium text-amber-700 dark:text-amber-400">{warning.message}</p>
+            ) : null}
             {error ? (
               <p role="alert" className="text-sm font-medium text-destructive">{error}</p>
             ) : null}
