@@ -11,7 +11,7 @@ import { attachAuthHeader, handleRequestFulfilled, handleRequestRejected, handle
 
 // client instance configuration
 const AXIOS_OPTIONS: CreateAxiosDefaults<any, any> | undefined = {
-  baseURL: process.env.BUDGET_BASE_URL || "localhost:6000",
+  baseURL: process.env.NEXT_PUBLIC_BUDGET_BASE_URL || "http://localhost:8080",
   timeout: 10000, // 10 second timeout limit
   headers: {
     'Content-Type': 'application/json',
@@ -30,3 +30,5 @@ client.interceptors.response.use(handleRequestFulfilled, handleUnauthenticatedEr
 
 // generate and export the axios client
 export default client;
+
+export * from "./errors"
