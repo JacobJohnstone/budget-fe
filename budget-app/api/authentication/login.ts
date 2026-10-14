@@ -1,7 +1,8 @@
+import { AUTH_SERVICE_ROUTE } from "."
 import client from ".."
 import type { LoginPayload, LoginResponse } from "./types"
 
-const LOGIN_ROUTE = "/api/v1/authentication/login"
+const LOGIN_ROUTE = AUTH_SERVICE_ROUTE + "/login"
 
 /**
  * Logs a user in and persists the returned auth token (if any) for the request interceptor.

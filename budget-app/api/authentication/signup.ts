@@ -1,7 +1,8 @@
+import { AUTH_SERVICE_ROUTE } from "."
 import client from ".."
 import type { ApiResult, SignupPayload, User } from "./types"
 
-const SIGNUP_ROUTE = "/api/v1/authentication/register"
+const SIGNUP_ROUTE = AUTH_SERVICE_ROUTE + "/register"
 
 /**
  * Registers a new user account.
