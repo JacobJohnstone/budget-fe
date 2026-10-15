@@ -11,7 +11,7 @@ import { attachAuthHeader, handleRequestFulfilled, handleRequestRejected, handle
 
 // client instance configuration
 const AXIOS_OPTIONS: CreateAxiosDefaults<any, any> | undefined = {
-  baseURL: process.env.NEXT_PUBLIC_BUDGET_BASE_URL || "http://localhost:8080",
+  baseURL: process.env.NEXT_PUBLIC_BUDGET_BASE_URL || "http://localhost:5000",
   timeout: 10000, // 10 second timeout limit
   headers: {
     'Content-Type': 'application/json',
